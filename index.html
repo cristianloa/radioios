@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Radio App</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="icon" href="css/radioapp.png" type="image/png">
+  <!-- PWA Meta Tags -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Radio App">
+  <link rel="apple-touch-icon" href="css/radioapp.png">
+  <link rel="manifest" href="manifest.json">
+</head>
+<body>
+  <div>
+    <header id="header">
+      <div class="container">
+        <button id="theme-toggle" aria-label="Cambiar tema">
+          <span class="theme-icon">🌙</span>
+        </button>
+        <div class="logo-container">
+          <img src="css/radioapp.png" alt="Radio App Logo" class="header-logo">
+          <h1>Radio App</h1>
+        </div>
+        <nav>
+          <div class="menu-icon" id="menu-icon">
+            <span></span>
+            <span></span>
+            <span></span>
+          </div>
+          <ul id="menu">
+            <li><a href="#stations">Inicio</a></li>
+            <li><a href="#about">Acerca de</a></li>
+            <li><a href="#contact">Contacto</a></li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+    <main id="main">
+      <div class="container">
+        <section id="stations">
+          <h2>Lista de Estaciones</h2>
+          <div id="stations-list">
+            <!-- Las estaciones de radio se listarán aquí -->
+          </div>
+          <div id="about">
+            <h2>Acerca de</h2>
+            <p>Mi nombre es Cristian Loaiza Huallpa y soy el creador de esta aplicación de radio. Esta aplicación permite a los usuarios escuchar sus estaciones de radio favoritas en línea de manera sencilla y accesible. Puedes conocer más sobre mí y mi experiencia profesional visitando mi <a href="https://www.linkedin.com/in/cristianloaizahuallpa" target="_blank">perfil de LinkedIn</a>.</p>
+          </div>
+          <div id="contact">
+            <h2>Contacto</h2>
+            <p>Si deseas ponerte en contacto conmigo, puedes utilizar la siguiente información o completar el formulario de contacto.</p>
+            <ul>
+              <li>Nombre: Cristian Loaiza Huallpa</li>
+              <li>Correo: <a href="mailto:cristianloaizahuallpa@gmail.com">cristianloaizahuallpa@gmail.com</a></li>
+              <li>WhatsApp: <a href="https://wa.me/51927898835" target="_blank">+51 927 898 835</a></li>
+              <li>LinkedIn: <a href="https://www.linkedin.com/in/cristianloaizahuallpa" target="_blank">Cristian Loaiza Huallpa</a></li>
+            </ul>
+            <form action="mailto:cristianloaizahuallpa@gmail.com" method="post" enctype="text/plain">
+              <label for="fname">Nombre:</label>
+              <input type="text" id="fname" name="nombre" required>
+              <label for="lname">Apellido:</label>
+              <input type="text" id="lname" name="apellido" required>
+              <label for="email">Correo Electrónico:</label>
+              <input type="email" id="email" name="correo" required>
+              <label for="phone">Número de WhatsApp:</label>
+              <input type="tel" id="phone" name="whatsapp" required>
+              <label for="message">Descripción o Mensaje:</label>
+              <textarea id="message" name="mensaje" required></textarea>
+              <input type="submit" value="Enviar">
+            </form>
+          </div>
+        </section>
+        <aside id="sidebar">
+          <div id="player-container">
+            <h2>Reproduciendo: <span id="station-name">Selecciona Estación</span></h2>
+            <canvas id="audio-spectrum" width="150" height="150"></canvas>
+            <audio controls id="audio-player">
+              <source id="audio-source" src="" type="audio/mpeg">
+              Tu navegador no soporta el elemento de audio.
+            </audio>
+          </div>
+        </aside>
+      </div>
+    </main>
+    <footer id="footer">
+      <div class="container">
+        <p>© 2024 Radio App. Todos los derechos reservados.</p>
+      </div>
+    </footer>
+  </div>
+  <script src="js/app.js"></script>
+  <script>
+    document.getElementById('menu-icon').addEventListener('click', function() {
+      var menu = document.getElementById('menu');
+      menu.classList.toggle('active');
+      this.classList.toggle('open');
+    });
+
+    document.querySelectorAll('nav ul li a').forEach(anchor => {
+      anchor.addEventListener('click', function(e) {
+        e.preventDefault();
+        const targetId = this.getAttribute('href').substring(1);
+        const targetElement = document.getElementById(targetId);
+        targetElement.scrollIntoView({ behavior: 'smooth' });
+        document.getElementById('menu').classList.remove('active');
+        document.getElementById('menu-icon').classList.remove('open');
+      });
+    });
+
+    // Registrar el service worker
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('/sw.js')
+        .then(reg => console.log('Service Worker registrado:', reg))
+        .catch(err => console.error('Error al registrar Service Worker:', err));
+    }
+  </script>
+</body>
+</html>
